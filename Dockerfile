@@ -1,4 +1,7 @@
-from python
+from debian:latest
+RUN apt-get update \ 
+    && apt-get install -y \
+        git-core 
 run git clone https://github.com/letsencrypt/letsencrypt /opt/letsencrypt/src
 run /opt/letsencrypt/src/letsencrypt-auto --os-packages-only && \
     apt-get clean && \
@@ -11,9 +14,9 @@ RUN virtualenv --no-site-packages -p python2 /opt/letsencrypt/venv && \
     --upgrade setuptools \
     -e /opt/letsencrypt/src/acme \
     -e /opt/letsencrypt/src \
-    -e /opt/letsencrypt/src/letsencrypt-apache \
-    -e /opt/letsencrypt/src/letsencrypt-nginx
+    -e /opt/letsencrypt/src/certbot-apache \
+    -e /opt/letsencrypt/src/certbot-nginx
 
 ENV PATH /opt/letsencrypt/venv/bin:$PATH
 
-ENTRYPOINT [ "letsencrypt" ]
+ENTRYPOINT [ "certbot" ]
